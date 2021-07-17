@@ -14,11 +14,13 @@ public class Member {
     @Column(name = "USERNAME")
     private String username;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID") //TEAM_ID JOIN
     private Team team;
+
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     public Long getId() {
         return id;
@@ -36,12 +38,20 @@ public class Member {
         this.username = username;
     }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public Team getTeam() {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void changeTeam(Team team) {
         this.team = team;
+        // setTeam 할때 자기 자신을 넣어주자
+        team.getMembers().add(this);
     }
+
+
 }
 
